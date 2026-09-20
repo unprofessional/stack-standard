@@ -8,6 +8,7 @@ The opinionated house stack for all new codebases. One set of conventions, every
 - [`viz/`](viz/) — codebase layer visualizer. Run it against any conforming repo and get an interactive graph of packages, files, API surface, config/env, external systems, and test coverage.
 - [`audits/`](audits/) — per-repo assessments against the standard: conforms / deviates / grandfathered / worth migrating.
 - [`template/`](template/) — repo scaffold with the standard and viz pre-wired (planned).
+- [`dispatches/`](dispatches/) — queued coding-agent briefs (presets, template, audits) with status tracking.
 
 ## Quick start (viz)
 
