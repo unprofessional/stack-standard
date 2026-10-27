@@ -18,6 +18,7 @@ A complete minimal service template in `template/`:
   - `example.route.ts` — Fastify route with request/response schemas
 - Generated OpenAPI v3 (§3) from the typed route definitions; `npm run openapi` emits `openapi.json`.
 - Typed `src/config.ts` env loader with fail-fast validation + `.env.example` (§7).
+- Security onboarding (§12): README/agent-instruction links, a service-profile template, an owner/private reporting route to fill before production, and applicable CI gates. Follow [security/](../security/README.md); do not add a second dependency-update platform.
 - vitest setup (§5) with pglite bootstrap: schema applied once per run, TRUNCATE-based cleanup between tests, one example DAO test and one example service test proving the pattern.
 - `npm run viz` — runs stack-standard's `viz/analyze.mjs` against the template, builds `layer-viz.html`, serves it locally.
 - pre-commit hook (lint-staged) preinstalled and working from a fresh clone (§6).

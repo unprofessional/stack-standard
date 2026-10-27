@@ -1,6 +1,6 @@
 # STANDARD.md — the house stack
 
-Status: **v0.2** — first red-pen pass applied (mads, 2026-09-20). Items marked ⚠ are still open.
+Status: **v0.3** — security requirements added (2026-10-27); existing stack choices retained. Items marked ⚠ are still open.
 
 Goal: every codebase we build is predictable. Same layout, same layering, same tooling, so cross-repo work (review, dispatch, visualization, onboarding) is cheap and all custom effort goes into business logic / engines / algorithms.
 
@@ -9,6 +9,7 @@ Goal: every codebase we build is predictable. Same layout, same layering, same t
 - **Node.js, ESM only.** No CommonJS in new code. `"type": "module"` in every package.json.
 - **TypeScript** for anything with a schema, API surface, DAO layer, or more than one contributor. Plain JS is acceptable for throwaway scripts and single-file tools; the moment a script grows a second file or a data shape, it graduates to TS.
 - TS config: `strict: true`, no implicit any, ESM module resolution (`NodeNext`).
+- Runtime updates follow [security/dependencies.md](security/dependencies.md), including support-file, lockfile, CI and deployed-runtime alignment.
 
 ## 2. API backend layering (MDVC)
 
@@ -62,6 +63,7 @@ Rules:
 - Env vars loaded through a single typed config module (`src/config.ts`) that validates at startup and fails fast with a clear message. No scattered `process.env` reads.
 - Secrets from the secret store (Infisical), never committed, never in `.env` files that are checked in.
 - Every env var the repo reads appears in `.env.example` with a comment.
+- Credentials and operational evidence follow [security/secrets-and-evidence.md](security/secrets-and-evidence.md); examples must contain no real secrets or private topology.
 
 ## 8. Error handling
 
@@ -74,6 +76,7 @@ Rules:
 - Monorepo workspaces (npm) when a project has multiple packages; single package otherwise. Don't start monorepos "for later."
 - README states: what it is, how to run, how to test, and any deviations from this standard with reasons.
 - Git: trunk = `develop`, releases cut from it; conventional-commit-style messages; every non-trivial change lands via PR.
+- Before a security fix, reconcile intended development work into the release baseline under the repository's approved policy; see [agent workflow](security/agent-workflow.md). This standards repository itself uses `main` as its sole trunk and PR target.
 - Code written by dispatched coding agents follows this standard identically — dispatch briefs reference `STANDARD.md §N` instead of restating conventions.
 
 ## 10. Visualizer integration
@@ -87,4 +90,16 @@ Rules:
 - Deviations are allowed with a written reason in the repo README ("deviations" section). Undocumented deviation = audit finding.
 - This standard evolves by PR to this repo. Breaking changes bump the version below and note migration steps.
 
-**Version:** 0.2.0 · **Last changed:** 2026-09-20 (red-pen pass: no escape valve, vitest over jest, Fastify + generated OpenAPI, Postgres/pglite-TRUNCATE testing, shared configs from prior art)
+## 12. Security
+
+- [security/README.md](security/README.md) is the normative entry point for security requirements, with focused guides linked by task. Human and coding-agent work follows the same controls.
+- New repositories identify a security owner/private reporting route, link the security index in README/agent instructions, and maintain a [service profile](security/templates/service-profile.md).
+- Verify advisories against primary sources and actual deployed artifacts. Keep containment, candidate validation and deployed fixes distinct; record scoped evidence and untested behavior.
+- Security changes need applicable CI gates, recovery preparation and post-deploy verification. Deviations require an [owned, expiring exception](security/templates/exception.md); architectural grandfathering is not security risk acceptance.
+- The separate dependency-security platform being built by Mads and Claude will automate detection and updates with an internal interactive dashboard. Its implementation is outside this repo; [automation.md](security/automation.md) defines the shared policy boundary without claiming those capabilities already exist.
+
+### Adoption from v0.2
+
+Existing repos add security links/profile and assess the controls relevant to their next change; remaining gaps become owned findings. Do not mass-upgrade dependencies or modify infrastructure merely to adopt v0.3. The [audit template](audits/README.md) separates missing evidence and security exceptions from structural conformance. Queued scaffold/audit work must include these requirements.
+
+**Version:** 0.3.0 · **Last changed:** 2026-10-27 (modular security requirements, agent workflow, evidence/recovery records and separate automation-platform boundary)
