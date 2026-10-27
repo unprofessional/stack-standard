@@ -17,6 +17,7 @@ Turn `audits/` from a template into a repeatable instrument: a checklist runner 
    - prettier/eslint config presence + whether they match the shared presets
    - viz compatibility: does `viz/analyze.mjs` run clean against it
    - Output: markdown table per audits/README.md template + a findings list. Non-zero exit only for hard findings (committed secrets/.env), warnings otherwise.
+   - Include the §12 security rows from the updated scorecard. Mark controls requiring live/manual evidence as **not assessed**, not passed based on file presence. Never print detected secret values. No network scans, secret-store calls or live deployment changes in this static instrument.
 2. First scorecards (run the checklist, then add human judgment in the Findings/Recommendation sections):
    - `audits/template.md` — audit the Dispatch-02 template itself; must be a clean pass or the checklist is wrong.
    - Scorecards for private repos (price-checker, slop-machine, spritebot, comfyops) are produced LOCALLY and delivered to the operator first — **do NOT commit audits of private repos to this public repo** without explicit operator approval. The public repo carries only the checklist, the template audit, and approved scorecards.

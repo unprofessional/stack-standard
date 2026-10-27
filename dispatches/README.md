@@ -5,6 +5,7 @@ Self-contained briefs for dispatched coding-agent work against this repo. Each i
 Conventions for all dispatches:
 - Work in a disposable git worktree cut from `main`; PR back to `main`. Never push directly.
 - Follow `STANDARD.md` — it is the subject of this repo, deviations need justification in the PR description.
+- Read [security/README.md](../security/README.md) and the relevant task guides. Keep private evidence out of this public repo; report scoped checks and limitations. The [separate automation platform](../security/automation.md) is not an implicit dispatch deliverable.
 - Commits carry mads's identity (Unprofessional <unprofessionalmadman@gmail.com>) by design.
 - Do not read/write outside the designated worktree.
 - PR description: what changed, how verified (commands + output summary), any STANDARD.md sections touched.
